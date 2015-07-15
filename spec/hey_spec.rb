@@ -38,20 +38,12 @@ describe Hey do
     end
   end
 
-  describe ".current_actor" do
-    it "delegates to the thread cargo class" do
-      Hey::ThreadCargo.stub(:current_actor)
-      Hey.current_actor
-      expect(Hey::ThreadCargo).to have_received(:current_actor)
-    end
-  end
-
-  describe ".set_current_actor" do
+  describe ".set_current_actor!" do
     it "delegates to the thread cargo class" do
       args = { name: "Hello", id: 1234, type: "Employee"}
-      Hey::ThreadCargo.stub(:set_current_actor)
-      Hey.set_current_actor(args)
-      expect(Hey::ThreadCargo).to have_received(:set_current_actor).with(args)
+      Hey::ThreadCargo.stub(:set_current_actor!)
+      Hey.set_current_actor!(args)
+      expect(Hey::ThreadCargo).to have_received(:set_current_actor!).with(args)
     end
   end
 

@@ -23,7 +23,7 @@ class Hey::ThreadCargo
   end
 
   # Adds the supplied values to the sanitized values array. It removes nils and duplicate values from the array.
-  def self.sanitize!(values)
+  def self.sanitize!(*values)
     set(:sanitizable_values, []) if get(:sanitizable_values).nil?
     values = Array(values)
     set(:sanitizable_values, get(:sanitizable_values).concat(values).flatten.compact.uniq)
