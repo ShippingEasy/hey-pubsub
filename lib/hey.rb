@@ -26,8 +26,8 @@ module Hey
     Hey::ThreadCargo.current_actor
   end
 
-  def self.current_actor=(actor)
-    Hey::ThreadCargo.current_actor = (actor)
+  def self.set_current_actor(name:, id: nil, type: nil)
+    Hey::ThreadCargo.set_current_actor(name: name, id: id, type: type)
   end
 end
 
