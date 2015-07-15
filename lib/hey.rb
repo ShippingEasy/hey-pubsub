@@ -31,6 +31,7 @@ module Hey
   end
 end
 
+require "hey/configuration"
 require "hey/pubsub"
 require "hey/thread_cargo"
 require "hey/pubsub/payload"
