@@ -15,7 +15,7 @@ module Hey
 
   def self.publish!(event_name, payload = {})
     payload = Hey::Pubsub::Payload.new(payload)
-    pubsub_adapter.broadcast!(event_name, payload.to_h)
+    pubsub_adapter.publish!(event_name, payload.to_h)
   end
 
   def self.subscribe!(event_name)
@@ -29,10 +29,14 @@ module Hey
   def self.set_current_actor(name:, id: nil, type: nil)
     Hey::ThreadCargo.set_current_actor(name: name, id: id, type: type)
   end
+
+  def self.sanitize!(values)
+    Hey::ThreadCargo.sanitize!(values)
+  end
 end
 
 require "hey/configuration"
-require "hey/pubsub"
 require "hey/thread_cargo"
+require "hey/pubsub"
 require "hey/pubsub/payload"
 require "hey/pubsub/adapters/asn_adapter"
