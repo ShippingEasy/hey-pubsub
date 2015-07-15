@@ -33,3 +33,4 @@ end
 
 require "hey/pubsub"
 require "hey/thread_cargo"
+require "hey/pubsub/payload"
