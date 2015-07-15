@@ -1,0 +1,1 @@
+module Hey::Pubsub; end
