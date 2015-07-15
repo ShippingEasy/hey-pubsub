@@ -34,3 +34,4 @@ end
 require "hey/pubsub"
 require "hey/thread_cargo"
 require "hey/pubsub/payload"
+require "hey/pubsub/adapters/asn_adapter"
