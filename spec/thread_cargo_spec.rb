@@ -1,6 +1,10 @@
 require "spec_helper"
 
 describe Hey::ThreadCargo do
+  after do
+    Hey::ThreadCargo.purge!
+  end
+
   describe "#get, #set" do
     specify do
       value = "Hello"
@@ -18,7 +22,7 @@ describe Hey::ThreadCargo do
 
   describe "#purge!" do
     before do
-      Hey::ThreadCargo.current_actor = "test"
+      Hey::ThreadCargo.set_current_actor(id: 1234, name: "Jim Jones", type: "employee")
       Hey::ThreadCargo.sanitize!("test")
       Hey::ThreadCargo.purge!
     end
@@ -35,10 +39,6 @@ describe Hey::ThreadCargo do
   describe "#sanitize!, #sanitizable_values" do
     before do
       Hey::ThreadCargo.sanitize!(value)
-    end
-
-    after do
-      Hey::ThreadCargo.purge!
     end
 
     context "when a string" do
@@ -59,13 +59,14 @@ describe Hey::ThreadCargo do
 
     context "when a an array and adding to existing values" do
       let(:value) { ["test", "Something", "new"] }
+      let(:value2) { ["test2", "Something2", "new2"] }
 
       before do
-        Hey::ThreadCargo.sanitize!(value)
+        Hey::ThreadCargo.sanitize!(value2)
       end
 
       specify do
-        expect(Hey::ThreadCargo.sanitizable_values).to eq((value + value).flatten)
+        expect(Hey::ThreadCargo.sanitizable_values).to eq((value + value2).flatten)
       end
     end
 
