@@ -26,7 +26,7 @@ module Hey
     Hey::ThreadCargo.set_current_actor(name: name, id: id, type: type)
   end
 
-  def self.sanitize!(values)
+  def self.sanitize!(*values)
     Hey::ThreadCargo.sanitize!(values)
   end
 end
