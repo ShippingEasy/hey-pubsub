@@ -1,8 +1,12 @@
-# Hey::Pubsub
+# Hey!
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hey/pubsub`. To experiment with that code, run `bin/console` for an interactive prompt.
+Hey is a lightweight pubsub wrapper that makes it easy to change underlying messaging implementations and also includes
+some convenience utilities to:
 
-TODO: Delete this and the text above, and describe your gem
+* Track chains of events
+* Sanitize sensitive data from event payloads
+* Record who originally kicked off the chain of events (the actor)
+* Set arbitrary data that will be included on every event published on the same thread
 
 ## Installation
 
@@ -22,7 +26,46 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Setting the current actor
+
+It's often useful to know who kicked off a chain of events, whether it's a user, employee or the system itself via
+some automated process. We call this entity the "current actor".
+
+As soon as you know who the current actor is for a a business process, you should set it:
+
+```ruby
+Hey.set_current_actor!(id: 13234, type: "Employee", name: "Jack Ship")
+```
+
+Any events published for the life of the current thread with include `current_actor` in their payloads.
+
+### Event chain UUID
+
+The first time an event is published via Hey a UUID will be assigned and stored on the current Thread.
+
+Any events published for the life of the current thread with include this `uuid` in their payloads. This allows a
+chain of events to be associated later in a Kibana dashboard, for example.
+
+### Sanitizing payloads
+
+There are times you'd like sensitive information to be stripped from event payloads. For example, if you are logging API
+requests and responses you should redact credentials before writing to a database or logfile.
+
+It's easier to handle this sanitization during publication, since subscribers of the events will likely not know what
+values to strip. Hey provides a utility to record these sensitive values and every event published during the life of
+the current thread will redact them from their payloads.
+
+```ruby
+Hey.sanitize!("ABC123", "4222222222222222", "245-65-12763")
+```
+
+### Setting arbitrary data
+
+If you need to set arbitrary values to be included on every event payload for the life of a thread, you can:
+
+```ruby
+Hey.set(:ip_address, "127.0.0.1")
+```
 
 ## Development
 
@@ -32,10 +75,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hey-pubsub.
+Bug reports and pull requests are welcome on GitHub at https://github.com/ShippingEasy/hey-pubsub.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
