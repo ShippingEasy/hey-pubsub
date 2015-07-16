@@ -1,8 +1,8 @@
 class Hey::Pubsub::Payload
   def initialize(values = {})
     @values = values
-    set_current_actor!
-    sanitize!
+    merge_values!
+    sanitize_values!
   end
 
   def to_hash
@@ -13,11 +13,14 @@ class Hey::Pubsub::Payload
 
   private
 
-  def set_current_actor!
-    values[:current_actor] = Hey::ThreadCargo.current_actor
+  attr_accessor :values
+
+  def merge_values!
+    Hey::ThreadCargo.uuid # initialize if it has never been set
+    self.values = Hey::ThreadCargo.to_hash.merge(values)
   end
 
-  def sanitize!
+  def sanitize_values!
     traverse_hash(values) { |k, v| [k, sanitize_value!(v)] }
   end
 
@@ -36,6 +39,4 @@ class Hey::Pubsub::Payload
       end
     end
   end
-
-  attr_reader :values
 end

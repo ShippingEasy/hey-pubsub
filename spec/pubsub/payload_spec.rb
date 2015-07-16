@@ -32,6 +32,10 @@ describe Hey::Pubsub::Payload do
       expect(subject.to_hash[:current_actor]).to eq(current_actor)
     end
 
+    it "adds the uuid" do
+      expect(subject.to_hash[:uuid]).to eq(Hey::ThreadCargo.uuid)
+    end
+
     it "sanitizes all sanitizable values" do
       expect(subject.to_hash[:request]).to eq("asdsdads?dasdasads&password=123456".gsub("123456", ""))
     end
@@ -50,11 +54,6 @@ describe Hey::Pubsub::Payload do
         expect(subject.to_hash[:http][:request]).to eq("asdsdads?dasdasads&password=123456".gsub("123456", ""))
         expect(subject.to_hash[:name]).to eq("Chuck D. ")
       end
-    end
-
-    it "returns the hash" do
-      hash = {:request=>"asdsdads?dasdasads&password=", :response=>"password=", :current_actor=>{:name=>"Jack Ship", :type=>"Employee", :id=>"1234"}}
-      expect(subject.to_hash).to eq(hash)
     end
   end
 end
