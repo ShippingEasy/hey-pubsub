@@ -24,6 +24,20 @@ Or install it yourself as:
 
     $ gem install hey-pubsub
 
+## Why use Hey?
+
+We often treat logging, exception notification and event broadcasting as separate operations within our code. Hey
+encourages you to treat everything as a published event that is meaningful to the current operation being performed.
+
+Any number of subscribers may react to the event once it's published. For example a published registration failure event
+could have a logstash subscriber logging the failure details into Kibana and a HoneyBadger subscriber recording the exception
+and notifying the dev team. A successful registration event, on the other hand, could trigger a welcome email delivery.
+
+The utilities Hey provides, such as data sanitization, makes it more appealing to combine these logging and pubsub use cases.
+Additionally the ability to switch out messaging implementations means you start with a simple approach (ActiveSupport
+Notifications) and ease into using a more distributed, asynchronous approach as your application grows without changing
+your code.
+
 ## Shared Metadata
 
 Hey provides utilities to share metadata across all events published on the same thread.
