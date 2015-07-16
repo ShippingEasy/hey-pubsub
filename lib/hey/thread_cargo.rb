@@ -32,8 +32,7 @@ class Hey::ThreadCargo
 
   # Removes all namespaced values from the current thread.
   def self.purge!
-    set(:current_actor, nil)
-    set(:sanitizable_values, nil)
+    Thread.current[:hey] = nil
   end
 
   def self.sanitizable_values
