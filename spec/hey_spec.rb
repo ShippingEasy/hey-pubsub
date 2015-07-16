@@ -47,6 +47,14 @@ describe Hey do
     end
   end
 
+  describe ".set" do
+    it "delegates to the thread cargo class" do
+      Hey::ThreadCargo.stub(:set)
+      Hey.set(:name, "Jack Ship")
+      expect(Hey::ThreadCargo).to have_received(:set).with(:name, "Jack Ship")
+    end
+  end
+
   describe ".configure" do
     it "sets values on the configuration object" do
       Hey.configure do |config|

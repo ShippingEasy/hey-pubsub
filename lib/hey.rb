@@ -22,6 +22,10 @@ module Hey
     pubsub_adapter.subscribe!(event_name)
   end
 
+  def self.set(name, value)
+    Hey::ThreadCargo.set(name, value)
+  end
+
   def self.set_current_actor!(name:, id: nil, type: nil)
     Hey::ThreadCargo.set_current_actor(name: name, id: id, type: type)
   end
