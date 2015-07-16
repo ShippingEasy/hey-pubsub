@@ -1,3 +1,5 @@
+require "active_support/all"
+
 module Hey::Pubsub::Adapters
   module AsnAdapter
     def self.subscribe!(event_name)
