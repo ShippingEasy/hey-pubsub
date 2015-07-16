@@ -3,7 +3,7 @@ require "spec_helper"
 describe Hey do
   let(:event_name) { "registration_creation.succeeded" }
   let(:payload) do
-    { name: "Bing Bong" }
+    Hey::Pubsub::Payload.new(name: "Bing Bong").to_h
   end
 
   describe ".pubsub_adapter" do
@@ -34,16 +34,16 @@ describe Hey do
     it "delegates to the thread cargo class" do
       Hey::ThreadCargo.stub(:sanitize!)
       Hey.sanitize!("ABc1234")
-      expect(Hey::ThreadCargo).to have_received(:sanitize!).with("ABc1234")
+      expect(Hey::ThreadCargo).to have_received(:sanitize!).with(["ABc1234"])
     end
   end
 
   describe ".set_current_actor!" do
     it "delegates to the thread cargo class" do
       args = { name: "Hello", id: 1234, type: "Employee"}
-      Hey::ThreadCargo.stub(:set_current_actor!)
+      Hey::ThreadCargo.stub(:set_current_actor)
       Hey.set_current_actor!(args)
-      expect(Hey::ThreadCargo).to have_received(:set_current_actor!).with(args)
+      expect(Hey::ThreadCargo).to have_received(:set_current_actor).with(args)
     end
   end
 
