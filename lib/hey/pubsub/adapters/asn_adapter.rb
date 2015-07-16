@@ -4,7 +4,7 @@ module Hey::Pubsub::Adapters
       if block_given?
         ActiveSupport::Notifications.subscribe(event_name) do |*args|
           event = ActiveSupport::Notifications::Event.new(*args)
-          yield(event)
+          yield(event.payload)
         end
       end
     end
