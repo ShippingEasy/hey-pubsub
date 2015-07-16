@@ -31,6 +31,7 @@ module Hey
   end
 end
 
+require "securerandom"
 require "hey/configuration"
 require "hey/thread_cargo"
 require "hey/pubsub"

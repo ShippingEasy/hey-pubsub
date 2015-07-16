@@ -18,6 +18,11 @@ class Hey::ThreadCargo
     get(:current_actor)
   end
 
+  def self.uuid
+    return set(:uuid, SecureRandom.uuid) if get(:uuid).nil?
+    get(:uuid)
+  end
+
   # Sets the actor to the current thread
   def self.set_current_actor(name:, type: nil, id: nil)
     set(:current_actor, { name: name, type: type, id: id})

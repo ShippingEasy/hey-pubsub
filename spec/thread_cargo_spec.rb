@@ -13,6 +13,15 @@ describe Hey::ThreadCargo do
     end
   end
 
+  describe "#uuid" do
+    context "when uuid is not set" do
+      it "creates a new one" do
+        expect(Hey::ThreadCargo.uuid).to_not be_nil
+        expect(Hey::ThreadCargo.get(:uuid)).to_not be_nil
+      end
+    end
+  end
+
   describe "#current_actor, #set_current_actor" do
     specify do
       Hey::ThreadCargo.set_current_actor(id: 1234, name: "Jim Jones", type: "employee")
