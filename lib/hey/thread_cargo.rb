@@ -4,6 +4,7 @@ class Hey::ThreadCargo
   def self.set(name, value)
     Thread.current[:hey] = {} if Thread.current[:hey].nil?
     Thread.current[:hey][name] = value
+    value
   end
 
   # Returns a namespaced value from the current thread
