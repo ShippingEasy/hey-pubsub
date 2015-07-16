@@ -116,7 +116,7 @@ switch to an asyncronous adapter it will fail. Only pass JSON compatible values.
 To subscribe to a published event, do this:
 
 ```ruby
-Hey.subsribe!("registration.succeeded") do |payload|
+Hey.subscribe!("registration.succeeded") do |payload|
   email = payload["email"]
   RegistrationMailer.new_customer(email).deliver
 end
