@@ -1,4 +1,5 @@
 class Hey::ThreadCargo
+  SANITIZABLE_VALUES_KEY = :sanitizable_values
 
   # Sets a namespaced value on the current thread
   def self.set(name, value)
@@ -30,9 +31,9 @@ class Hey::ThreadCargo
 
   # Adds the supplied values to the sanitized values array. It removes nils and duplicate values from the array.
   def self.sanitize!(*values)
-    set(:sanitizable_values, []) if get(:sanitizable_values).nil?
+    set(SANITIZABLE_VALUES_KEY, []) if get(SANITIZABLE_VALUES_KEY).nil?
     values = Array(values)
-    set(:sanitizable_values, get(:sanitizable_values).concat(values).flatten.compact.uniq)
+    set(SANITIZABLE_VALUES_KEY, get(SANITIZABLE_VALUES_KEY).concat(values).flatten.compact.uniq)
   end
 
   # Removes all namespaced values from the current thread.
@@ -41,6 +42,13 @@ class Hey::ThreadCargo
   end
 
   def self.sanitizable_values
-    Array(get(:sanitizable_values))
+    Array(get(SANITIZABLE_VALUES_KEY))
+  end
+
+  def self.to_hash
+    Thread.current[:hey] = {} if Thread.current[:hey].nil?
+    hash = Thread.current[:hey].clone
+    hash.delete(SANITIZABLE_VALUES_KEY)
+    hash
   end
 end

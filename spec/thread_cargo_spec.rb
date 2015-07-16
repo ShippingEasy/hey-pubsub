@@ -29,6 +29,17 @@ describe Hey::ThreadCargo do
     end
   end
 
+  describe "#to_hash" do
+    it "does not return the santizable values" do
+      expect(Hey::ThreadCargo.to_hash[Hey::ThreadCargo::SANITIZABLE_VALUES_KEY]).to be_nil
+    end
+
+    it "returns a hash of values" do
+      Hey::ThreadCargo.set(:test, "test")
+      expect(Hey::ThreadCargo.to_hash[:test]).to eq("test")
+    end
+  end
+
   describe "#purge!" do
     before do
       Hey::ThreadCargo.set_current_actor(id: 1234, name: "Jim Jones", type: "employee")
