@@ -1,5 +1,5 @@
 module Hey::Pubsub::Adapters
-  class AsnAdapter
+  module AsnAdapter
     def self.subscribe!(event_name)
       if block_given?
         ActiveSupport::Notifications.subscribe(event_name) do |*args|
