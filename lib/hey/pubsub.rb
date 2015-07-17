@@ -1,1 +1,4 @@
-module Hey::Pubsub; end
+module Hey
+  module Pubsub
+  end
+end
