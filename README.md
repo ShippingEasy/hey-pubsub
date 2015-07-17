@@ -13,7 +13,7 @@ some convenience utilities to:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hey-pubsub'
+gem 'hey-pubsub', require: 'hey'
 ```
 
 And then execute:
