@@ -13,9 +13,9 @@ module Hey
     configuration.pubsub_adapter
   end
 
-  def self.publish!(event_name, payload = {})
+  def self.publish!(event_name, payload = {}, &block)
     payload = Hey::Pubsub::Payload.new(payload)
-    pubsub_adapter.publish!(event_name, payload.to_h)
+    pubsub_adapter.publish!(event_name, payload.to_h, &block)
   end
 
   def self.subscribe!(event_name)
