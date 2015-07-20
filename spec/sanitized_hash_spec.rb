@@ -1,16 +1,8 @@
 require "spec_helper"
 
-describe Hey::Pubsub::Payload do
+describe Hey::SanitizedHash do
   after do
     Hey::ThreadCargo.purge!
-  end
-
-  let(:current_actor) do
-    {
-      name: "Jack Ship",
-      id: "1234",
-      type: "Employee"
-    }
   end
 
   let(:values) do
@@ -20,20 +12,11 @@ describe Hey::Pubsub::Payload do
     }
   end
 
-  subject { Hey::Pubsub::Payload.new(values) }
+  subject { Hey::SanitizedHash.new(values) }
 
   describe "#to_h" do
     before do
-      Hey::ThreadCargo.set_current_actor(current_actor)
       Hey::ThreadCargo.sanitize!("123456")
-    end
-
-    it "adds the current actor" do
-      expect(subject.to_h[:current_actor]).to eq(current_actor)
-    end
-
-    it "adds the uuid" do
-      expect(subject.to_h[:uuid]).to eq(Hey::ThreadCargo.uuid)
     end
 
     it "sanitizes all sanitizable values" do

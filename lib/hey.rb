@@ -38,6 +38,7 @@ end
 require "securerandom"
 require "hey/configuration"
 require "hey/thread_cargo"
+require "hey/sanitized_hash"
 require "hey/pubsub"
 require "hey/pubsub/payload"
 require "hey/pubsub/adapters/asn_adapter"
