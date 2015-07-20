@@ -22,6 +22,6 @@ describe Hey::Pubsub::Adapters::AsnAdapter do
 
     Hey::Pubsub::Adapters::AsnAdapter.publish!("registration_completed", event_payload)
 
-    expect(Thread.current[:recorded_payload]).to eq(event_payload)
+    expect(Thread.current[:recorded_payload][:metadata]).to eq(event_payload)
   end
 end
