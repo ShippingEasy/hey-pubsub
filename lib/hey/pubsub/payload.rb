@@ -26,7 +26,7 @@ class Hey::Pubsub::Payload
 
   def sanitize_value!(value)
     Hey::ThreadCargo.sanitizable_values.each do |sanitizable_value|
-      value = value.gsub(sanitizable_value, "")
+      value = value.to_s.gsub(sanitizable_value, "")
     end
     value
   end
