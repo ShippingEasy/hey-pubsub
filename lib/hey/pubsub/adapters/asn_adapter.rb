@@ -5,8 +5,16 @@ module Hey::Pubsub::Adapters
     def self.subscribe!(event_name)
       if block_given?
         ActiveSupport::Notifications.subscribe(event_name) do |*args|
-          event = ActiveSupport::Notifications::Event.new(*args)
-          yield(event.payload)
+          asn_event = ActiveSupport::Notifications::Event.new(*args)
+
+          payload = asn_event.payload.dup
+          event = Hey::Pubsub::Event.new(uuid: payload.delete(:uuid),
+                                         name: asn_event.name,
+                                         started_at: asn_event.time,
+                                         ended_at: asn_event.end,
+                                         metadata: payload)
+
+          yield(event.to_hash)
         end
       end
     end
