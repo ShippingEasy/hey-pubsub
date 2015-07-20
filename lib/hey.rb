@@ -18,8 +18,8 @@ module Hey
     pubsub_adapter.publish!(event_name, payload.to_h, &block)
   end
 
-  def self.subscribe!(event_name)
-    pubsub_adapter.subscribe!(event_name)
+  def self.subscribe!(event_name, &block)
+    pubsub_adapter.subscribe!(event_name, &block)
   end
 
   def self.set(name, value)
