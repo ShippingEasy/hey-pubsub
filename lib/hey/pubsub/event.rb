@@ -28,6 +28,8 @@ class Hey::Pubsub::Event
 
   def metadata
     merged_data = Hey::ThreadCargo.to_hash.merge(@metadata)
+    merged_data.delete(:uuid)
+    merged_data.delete(Hey::ThreadCargo::SANITIZABLE_VALUES_KEY)
     Hey::SanitizedHash.new(merged_data).to_h
   end
 
