@@ -16,11 +16,11 @@ describe Hey::Pubsub::Adapters::AsnAdapter do
   it "can publish and subscribe to a hash" do
     event_payload = { name: "Jack Ship" }
 
-    Hey::Pubsub::Adapters::AsnAdapter.subscribe!("registration_completed") do |payload|
+    Hey::Pubsub::Adapters::AsnAdapter.subscribe!("pubsub.registration_completed") do |payload|
       Thread.current[:recorded_payload] = payload
     end
 
-    Hey::Pubsub::Adapters::AsnAdapter.publish!("registration_completed", event_payload)
+    Hey::Pubsub::Adapters::AsnAdapter.publish!(Hey::Pubsub::Event.new(name: "registration_completed", metadata: event_payload))
 
     expect(Thread.current[:recorded_payload][:metadata]).to eq(event_payload)
   end
