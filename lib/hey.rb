@@ -13,10 +13,11 @@ module Hey
     configuration.pubsub_adapter
   end
 
-  def self.publish!(event_name, payload = {}, &block)
-    payload = Hey::Pubsub::Payload.new(payload)
-    pubsub_adapter.publish!(event_name, payload.to_h, &block)
-  end
+  module Behavior
+    def publish!(event_name, payload = {}, &block)
+      event = Hey::Pubsub::Event.new(name: event_name, metadata: payload)
+      pubsub_adapter.publish!(event, &block)
+    end
 
   def self.subscribe!(event_name, &block)
     pubsub_adapter.subscribe!(event_name, &block)
@@ -40,6 +41,5 @@ require "hey/configuration"
 require "hey/thread_cargo"
 require "hey/sanitized_hash"
 require "hey/pubsub"
-require "hey/pubsub/payload"
 require "hey/pubsub/event"
 require "hey/pubsub/adapters/asn_adapter"

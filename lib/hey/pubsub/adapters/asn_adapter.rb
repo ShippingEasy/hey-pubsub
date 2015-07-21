@@ -8,8 +8,7 @@ module Hey::Pubsub::Adapters
           asn_event = ActiveSupport::Notifications::Event.new(*args)
 
           payload = asn_event.payload.dup
-          event = Hey::Pubsub::Event.new(uuid: payload.delete(:uuid),
-                                         name: asn_event.name,
+          event = Hey::Pubsub::Event.new(name: asn_event.name,
                                          started_at: asn_event.time,
                                          ended_at: asn_event.end,
                                          metadata: payload)
@@ -19,13 +18,13 @@ module Hey::Pubsub::Adapters
       end
     end
 
-    def self.publish!(event_name, payload = {})
+    def self.publish!(event)
       if block_given?
-        ActiveSupport::Notifications.instrument(event_name, payload) do
+        ActiveSupport::Notifications.instrument(event.name, event.metadata) do
           yield
         end
       else
-        ActiveSupport::Notifications.instrument(event_name, payload)
+        ActiveSupport::Notifications.instrument(event.name, event.metadata)
       end
     end
   end
