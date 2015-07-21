@@ -22,13 +22,6 @@ describe Hey::ThreadCargo do
     end
   end
 
-  describe "#current_actor, #set_current_actor" do
-    specify do
-      Hey::ThreadCargo.set_current_actor(id: 1234, name: "Jim Jones", type: "employee")
-      expect(Hey::ThreadCargo.current_actor).to eq({id: 1234, name: "Jim Jones", type: "employee"})
-    end
-  end
-
   describe "#to_hash" do
     it "does not return the santizable values" do
       expect(Hey::ThreadCargo.to_hash[Hey::ThreadCargo::SANITIZABLE_VALUES_KEY]).to be_nil
@@ -42,13 +35,13 @@ describe Hey::ThreadCargo do
 
   describe "#purge!" do
     before do
-      Hey::ThreadCargo.set_current_actor(id: 1234, name: "Jim Jones", type: "employee")
+      Hey::ThreadCargo.set(:name, "Jim Jones")
       Hey::ThreadCargo.sanitize!("test")
       Hey::ThreadCargo.purge!
     end
 
     it "unsets the current actor" do
-      expect(Hey::ThreadCargo.current_actor).to be_nil
+      expect(Hey::ThreadCargo.get(:name)).to be_nil
     end
 
     it "unsets the sanitizable values" do

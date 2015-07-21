@@ -14,19 +14,9 @@ class Hey::ThreadCargo
     Thread.current[:hey][name]
   end
 
-  # Returns the actor from the current thread
-  def self.current_actor
-    get(:current_actor)
-  end
-
   def self.uuid
     return set(:uuid, SecureRandom.uuid) if get(:uuid).nil?
     get(:uuid)
-  end
-
-  # Sets the actor to the current thread
-  def self.set_current_actor(name:, type: nil, id: nil)
-    set(:current_actor, { name: name, type: type, id: id})
   end
 
   # Adds the supplied values to the sanitized values array. It removes nils and duplicate values from the array.
