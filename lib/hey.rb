@@ -19,21 +19,20 @@ module Hey
       pubsub_adapter.publish!(event, &block)
     end
 
-  def self.subscribe!(event_name, &block)
-    pubsub_adapter.subscribe!(event_name, &block)
+    def subscribe!(event_name, &block)
+      pubsub_adapter.subscribe!(event_name, &block)
+    end
+
+    def set(name, value)
+      Hey::ThreadCargo.set(name, value)
+    end
+
+    def sanitize!(*values)
+      Hey::ThreadCargo.sanitize!(values)
+    end
   end
 
-  def self.set(name, value)
-    Hey::ThreadCargo.set(name, value)
-  end
-
-  def self.set_current_actor!(name:, id: nil, type: nil)
-    Hey::ThreadCargo.set_current_actor(name: name, id: id, type: type)
-  end
-
-  def self.sanitize!(*values)
-    Hey::ThreadCargo.sanitize!(values)
-  end
+  extend Hey::Behavior
 end
 
 require "securerandom"
