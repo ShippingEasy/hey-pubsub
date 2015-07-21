@@ -1,5 +1,6 @@
 class Hey::Pubsub::Event
-  attr_writer :name, :metadata, :started_at, :ended_at
+  attr_writer :metadata, :started_at, :ended_at
+  attr_accessor :name
 
   def initialize(name:, started_at: nil, ended_at: nil, metadata: {})
     @name = name
@@ -31,11 +32,6 @@ class Hey::Pubsub::Event
     merged_data.delete(:uuid)
     merged_data.delete(Hey::ThreadCargo::SANITIZABLE_VALUES_KEY)
     Hey::SanitizedHash.new(merged_data).to_h
-  end
-
-  def name
-    return @name if Hey.configuration.namespace.nil?
-    "#{Hey.configuration.namespace}.#{@name}"
   end
 
   def duration

@@ -38,7 +38,7 @@ describe Hey::Pubsub::Event do
     end
 
     it "sets the name" do
-      expect(subject.to_h[:name]).to eq("pubsub.#{name}")
+      expect(subject.to_h[:name]).to eq(name)
     end
 
     it "adds the uuid" do
@@ -65,4 +65,6 @@ describe Hey::Pubsub::Event do
       end
     end
   end
+
+
 end

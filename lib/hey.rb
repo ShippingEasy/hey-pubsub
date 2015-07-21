@@ -15,6 +15,7 @@ module Hey
 
   module Behavior
     def publish!(event_name, payload = {}, &block)
+      event_name = "#{Hey.configuration.namespace}.#{event_name}" unless Hey.configuration.namespace.nil?
       event = Hey::Pubsub::Event.new(name: event_name, metadata: payload)
       pubsub_adapter.publish!(event, &block)
     end

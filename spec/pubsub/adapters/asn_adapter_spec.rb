@@ -16,7 +16,7 @@ describe Hey::Pubsub::Adapters::AsnAdapter do
   it "can publish and subscribe to a hash" do
     event_payload = { name: "Jack Ship" }
 
-    Hey::Pubsub::Adapters::AsnAdapter.subscribe!("pubsub.registration_completed") do |payload|
+    Hey::Pubsub::Adapters::AsnAdapter.subscribe!("registration_completed") do |payload|
       Thread.current[:recorded_payload] = payload
     end
 
