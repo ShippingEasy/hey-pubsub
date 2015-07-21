@@ -5,7 +5,6 @@ some convenience utilities to:
 
 * Track a chain of events
 * Sanitize sensitive data from event payloads
-* Record who originally kicked off the chain of events (the actor)
 * Set arbitrary data that will be included on every event published on the same thread
 
 ## Installation
@@ -42,19 +41,6 @@ your code.
 
 Hey provides utilities to share metadata across all events published on the same thread.
 
-### Setting the current actor
-
-It's often useful to know who kicked off a chain of events, whether it's a user, employee or the system itself via
-some automated process. We call this entity the "current actor".
-
-As soon as you know who the current actor is for a a business process, you should set it:
-
-```ruby
-Hey.set_current_actor!(id: 13234, type: "Employee", name: "Jack Ship")
-```
-
-Any events published for the life of the current thread with include `current_actor` in their payloads.
-
 ### Event chain UUID
 
 The first time an event is published via Hey a UUID will be assigned and stored on the current thread.
@@ -85,6 +71,11 @@ If you need to set arbitrary values to be included on every event payload for th
 ```ruby
 Hey.set(:ip_address, "127.0.0.1")
 ```
+
+### Writing customer setters
+
+TODO
+
 ## Event publishing and subscribing
 
 ### Adapters

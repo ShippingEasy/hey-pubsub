@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["ShippingEasy"]
   spec.email         = ["dev@shippingeasy.com"]
 
-  spec.summary       = %q{Pubsub wrapper with utilities to chain events, sanitize payloads and record the actor.}
+  spec.summary       = %q{Pubsub wrapper with utilities to chain events, sanitize payloads and record data on all events on the same thread.}
   spec.homepage      = "https://github.com/ShippingEasy/hey-pubsub"
   spec.license       = "MIT"
 
