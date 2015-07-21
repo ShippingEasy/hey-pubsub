@@ -35,10 +35,8 @@ class Hey::ThreadCargo
     Array(get(SANITIZABLE_VALUES_KEY))
   end
 
-  def self.to_hash
+  def self.to_h
     Thread.current[:hey] = {} if Thread.current[:hey].nil?
-    hash = Thread.current[:hey].clone
-    hash.delete(SANITIZABLE_VALUES_KEY)
-    hash
+    Thread.current[:hey].clone
   end
 end

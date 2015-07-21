@@ -22,14 +22,10 @@ describe Hey::ThreadCargo do
     end
   end
 
-  describe "#to_hash" do
-    it "does not return the santizable values" do
-      expect(Hey::ThreadCargo.to_hash[Hey::ThreadCargo::SANITIZABLE_VALUES_KEY]).to be_nil
-    end
-
+  describe "#to_h" do
     it "returns a hash of values" do
       Hey::ThreadCargo.set(:test, "test")
-      expect(Hey::ThreadCargo.to_hash[:test]).to eq("test")
+      expect(Hey::ThreadCargo.to_h[:test]).to eq("test")
     end
   end
 
