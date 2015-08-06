@@ -12,11 +12,13 @@ class Hey::SanitizedHash
   attr_reader :hash
 
   def sanitizable_values
-    @sanitizable_values ||= Hey::ThreadCargo.sanitizable_values.collect { |value| [value, ""] }.to_h
+    @sanitizable_values ||= Hey::ThreadCargo.contexts.map do |context|
+      Array[context[Hey::SANITIZE_KEY]]
+    end.flatten.compact
   end
 
   def sanitize!(value)
-    Hey::ThreadCargo.sanitizable_values.each { |substr| value.to_s.gsub!(substr, "") }
+    sanitizable_values.each { |substr| value.to_s.gsub!(substr, "") }
   end
 
   def traverse(h, &block)
