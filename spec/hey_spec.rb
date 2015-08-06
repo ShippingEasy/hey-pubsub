@@ -30,19 +30,44 @@ describe Hey do
     end
   end
 
-  describe ".sanitize!" do
-    it "delegates to the thread cargo class" do
-      Hey::ThreadCargo.stub(:sanitize!)
-      Hey.sanitize!("ABc1234")
-      expect(Hey::ThreadCargo).to have_received(:sanitize!).with(["ABc1234"])
+  describe ".context" do
+    it "adds the context to thread cargo" do
+      Hey.context(foo: "bar") do
+        expect(Hey::ThreadCargo.contexts.first[:foo]).to eq("bar")
+      end
     end
-  end
 
-  describe ".set" do
-    it "delegates to the thread cargo class" do
-      Hey::ThreadCargo.stub(:set)
-      Hey.set(:name, "Jack Ship")
-      expect(Hey::ThreadCargo).to have_received(:set).with(:name, "Jack Ship")
+    it "cleans up the context" do
+      Hey.context(foo: "bar") do
+        nil
+      end
+      expect(Hey::ThreadCargo.contexts).to be_empty
+    end
+
+    it "purges the namespace" do
+      Hey.context(foo: "bar") do
+        nil
+      end
+      expect(Thread.current[:hey]).to be_nil
+    end
+
+    context "when contexts nested" do
+      it "adds the inner context" do
+        Hey.context(foo: "bar") do
+          Hey.context(bar: "foo") do
+            expect(Hey::ThreadCargo.contexts.count).to eq(2)
+          end
+        end
+      end
+
+      it "cleans up the inner context" do
+        Hey.context(foo: "bar") do
+          Hey.context(bar: "foo") do
+            nil
+          end
+          expect(Hey::ThreadCargo.contexts.count).to eq(1)
+        end
+      end
     end
   end
 
