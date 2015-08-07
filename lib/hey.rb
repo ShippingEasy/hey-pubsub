@@ -1,6 +1,10 @@
 require "hey/version"
+require "ostruct"
+require "securerandom"
 
 module Hey
+  SANITIZE_KEY = :sanitize
+
   def self.configure
     yield(configuration)
   end
@@ -24,20 +28,21 @@ module Hey
       pubsub_adapter.subscribe!(event_name, &block)
     end
 
-    def set(name, value)
-      Hey::ThreadCargo.set(name, value)
-    end
-
-    def sanitize!(*values)
-      Hey::ThreadCargo.sanitize!(values)
+    def context(**hash)
+      _context = Context.new(hash)
+      ThreadCargo.add_context(_context)
+      yield
+    ensure
+      ThreadCargo.remove_context(_context)
+      ThreadCargo.purge! if ThreadCargo.contexts.empty?
     end
   end
 
   extend Hey::Behavior
 end
 
-require "securerandom"
 require "hey/configuration"
+require "hey/context"
 require "hey/thread_cargo"
 require "hey/sanitized_hash"
 require "hey/pubsub"

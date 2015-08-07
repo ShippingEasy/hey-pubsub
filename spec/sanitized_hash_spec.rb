@@ -16,7 +16,8 @@ describe Hey::SanitizedHash do
 
   describe "#to_h" do
     before do
-      Hey::ThreadCargo.sanitize!("123456")
+      sanitize_context = Hey::Context.new(sanitize: "123456")
+      Hey::ThreadCargo.add_context(sanitize_context)
     end
 
     it "sanitizes all sanitizable values" do
