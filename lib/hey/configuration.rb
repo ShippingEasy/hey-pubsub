@@ -3,6 +3,5 @@ class Hey::Configuration
 
   def initialize
     @pubsub_adapter = Hey::Pubsub::Adapters::AsnAdapter
-    @namespace = "pubsub"
   end
 end
