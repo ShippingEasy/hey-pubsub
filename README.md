@@ -79,8 +79,8 @@ There are times you'd like sensitive information to be stripped from event paylo
 requests and responses you should redact credentials before writing to a database or logfile.
 
 It's easier to handle this sanitization during publication, since subscribers of the events will likely not know what
-values to strip. Hey provides a utility to record these sensitive values and every event published during the life of
-the current thread will redact them from their payloads.
+values to strip. Hey provides a utility to record these sensitive values and every event published within a context and
+will redact them from their payloads.
 
 You can sanitize data by using the key `sanitize` in your contexts:
 
