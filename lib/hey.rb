@@ -17,9 +17,12 @@ module Hey
     configuration.pubsub_adapter
   end
 
+  def self.global_namespace
+    configuration.global_namespace
+  end
+
   module Behavior
     def publish!(event_name, payload = {}, &block)
-      event_name = "#{Hey.configuration.namespace}.#{event_name}" unless Hey.configuration.namespace.nil?
       event = Hey::Pubsub::Event.new(name: event_name, metadata: payload)
       pubsub_adapter.publish!(event, &block)
     end
@@ -43,6 +46,7 @@ end
 
 require "hey/configuration"
 require "hey/context"
+require "hey/event_name"
 require "hey/thread_cargo"
 require "hey/sanitized_hash"
 require "hey/pubsub"
