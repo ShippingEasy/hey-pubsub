@@ -8,7 +8,7 @@ describe Hey do
 
   describe ".pubsub_adapter" do
     it "delegates to configuration" do
-      Hey::Configuration.any_instance.stub(:pubsub_adapter)
+      allow_any_instance_of(Hey::Configuration).to receive(:pubsub_adapter)
       Hey.pubsub_adapter
       expect(Hey.configuration).to have_received(:pubsub_adapter)
     end
@@ -16,7 +16,7 @@ describe Hey do
 
   describe ".subscribe!" do
     it "delegates to the adapter" do
-      Hey.pubsub_adapter.stub(:subscribe!)
+      allow(Hey.pubsub_adapter).to receive(:subscribe!)
       Hey.subscribe!(event_name)
       expect(Hey.pubsub_adapter).to have_received(:subscribe!).with(event_name)
     end
@@ -24,7 +24,7 @@ describe Hey do
 
   describe ".publish!" do
     it "delegates to the adapter" do
-      Hey.pubsub_adapter.stub(:publish!)
+      allow(Hey.pubsub_adapter).to receive(:publish!)
       Hey.publish!(event_name, payload)
       expect(Hey.pubsub_adapter).to have_received(:publish!)
     end
