@@ -51,7 +51,29 @@ chain of events to be associated later in a Kibana dashboard, for example.
 This UUID could be used across disparate systems subscribing to the same message bus, so long as the convention is
 adhered to.
 
-### Sanitizing payloads
+### Contexts
+
+Use contexts if you want to attach meta-data to all events that happen on a thread from a certain point forward.
+
+```ruby
+Hey.context(ip_address: "127.0.0.1") do
+  Hey.publish!("registration.succeeded", { email: "john@ecommerce.com" })
+end
+```
+
+The payloads of all events wrapped in a context will include this extra data.
+
+You may also nest contexts:
+
+```ruby
+Hey.context(ip_address: "127.0.0.1") do
+  Hey.context(current_actor: "Jack Ship") do
+    Hey.publish!("registration.succeeded", { email: "john@ecommerce.com" })
+  end
+end
+```
+
+#### Sanitizing payloads
 
 There are times you'd like sensitive information to be stripped from event payloads. For example, if you are logging API
 requests and responses you should redact credentials before writing to a database or logfile.
@@ -60,21 +82,52 @@ It's easier to handle this sanitization during publication, since subscribers of
 values to strip. Hey provides a utility to record these sensitive values and every event published during the life of
 the current thread will redact them from their payloads.
 
-```ruby
-Hey.sanitize!("ABC123", "4222222222222222", "245-65-12763")
-```
-
-### Setting arbitrary data
-
-If you need to set arbitrary values to be included on every event payload for the life of a thread, you can:
+You can sanitize data by using the key `sanitize` in your contexts:
 
 ```ruby
-Hey.set(:ip_address, "127.0.0.1")
+Hey.context(sanitize: ["227-76-1234"]) do
+  Hey.publish!("registration.succeeded", { email: "john@ecommerce.com" })
+end
 ```
 
-### Writing customer setters
+#### Namespacing events
 
-TODO
+You can automatically namespace your event names using contexts and a top-level namespace.
+
+A top-level namespace can be configured like this:
+
+```ruby
+Hey.configure do |config|
+  config.global_namespace = “my-app”
+end
+```
+
+As can a delimiter for chaining an event name together, the default of which is “:” :
+
+```ruby
+Hey.configure do |config|
+  config.delimiter = “/”
+end
+```
+
+With this configuration, an event’s name would look like this:
+
+```ruby
+Hey.publish!("registered", { email: "john@ecommerce.com" })
+=> "my-app/registered"
+```
+
+You can also set a namespace on contexts and they will automatically be chained together in the order they are nested:
+
+```ruby
+Hey.context(namespace: “foo”) do
+  Hey.context(namespace: “bar”) do
+    Hey.publish!(“hooray”)
+  end
+end
+
+=> "foo:bar:hooray"
+```
 
 ## Event publishing and subscribing
 
@@ -126,6 +179,19 @@ Hey.subscribe!("registration.succeeded") do |payload|
   RegistrationMailer.new_customer(email).deliver
 end
 ```
+
+## Middleware
+
+A faraday middleware adapter is provided to automatically broadcast all requests and responses.
+
+```ruby
+faraday_connection = ::Faraday.new(url: base_url) do |faraday|
+  faraday.use Hey::Pubsub::Middleware::Faraday
+  faraday.adapter ::Faraday.default_adapter
+end
+```
+
+It will broadcast the event names "request" and "response", so be sure to use contexts and namespacing to make the event names more meaningful.
 
 ## Development
 
