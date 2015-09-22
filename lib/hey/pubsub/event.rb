@@ -3,7 +3,7 @@ class Hey::Pubsub::Event
   attr_accessor :name
 
   def initialize(name:, started_at: nil, ended_at: nil, metadata: {})
-    @name = Hey::EventName.new(name).to_s
+    @name = name
     @started_at = started_at
     @ended_at = ended_at
     @metadata = metadata

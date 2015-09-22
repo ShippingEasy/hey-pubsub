@@ -23,6 +23,7 @@ module Hey
 
   module Behavior
     def publish!(event_name, payload = {}, &block)
+      event_name = Hey::EventName.new(event_name).to_s
       event = Hey::Pubsub::Event.new(name: event_name, metadata: payload)
       pubsub_adapter.publish!(event, &block)
     end
