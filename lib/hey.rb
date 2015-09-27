@@ -1,6 +1,7 @@
 require "hey/version"
 require "ostruct"
 require "securerandom"
+require "faraday_middleware"
 
 module Hey
   SANITIZE_KEY = :sanitize
