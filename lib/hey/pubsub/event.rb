@@ -30,7 +30,9 @@ class Hey::Pubsub::Event
   def metadata
     context_metadata = Hey::ThreadCargo.contexts.reverse.map(&:to_h).reduce(Hash.new, :merge)
     merged_data = context_metadata.merge(@metadata)
-    Hey::SanitizedHash.new(merged_data).to_h
+    hash = Hey::SanitizedHash.new(merged_data).to_h
+    hash.delete(:sanitize)
+    hash
   end
 
   def duration

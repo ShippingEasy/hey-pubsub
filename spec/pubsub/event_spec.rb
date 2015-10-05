@@ -39,6 +39,10 @@ describe Hey::Pubsub::Event do
       expect(subject.to_h[:metadata][:request]).to eq("asdsdads?dasdasads&password=123456".gsub("123456", ""))
     end
 
+    it "removes the sanitize entry" do
+      expect(subject.to_h[:metadata][:sanitize]).to be_nil
+    end
+
     context "with a set of nested hashes" do
       let(:metadata) do
         {
