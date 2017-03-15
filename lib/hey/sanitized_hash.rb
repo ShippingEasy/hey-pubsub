@@ -32,6 +32,6 @@ class Hey::SanitizedHash
   end
 
   def deep_dup(object)
-    Marshal.load(Marshal.dump(object))
+    object.deep_dup
   end
 end
